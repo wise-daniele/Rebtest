@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="app_name">Rebtest</string>
+
+    <string name="text_capital_desc">Capital:\u0020</string>
+
+
+    <!-- A sync adapter may be useful to get the application up to date -->
+    <string name="sync_account_type">rebtest.epresidential.com</string>
+
+    <string name="content_authority">com.epresidential.rebtest.app</string>
+
+</resources>
