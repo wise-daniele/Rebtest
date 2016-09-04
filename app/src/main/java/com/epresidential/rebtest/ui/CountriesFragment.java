@@ -25,6 +25,7 @@ import com.epresidential.rebtest.model.Country;
 import com.epresidential.rebtest.rest.HttpResponseException;
 import com.epresidential.rebtest.rest.JsonHttpResponseListener;
 import com.epresidential.rebtest.rest.RestCountriesClient;
+import com.epresidential.rebtest.sync.CountriesSyncAdapter;
 import com.epresidential.rebtest.ui.adapter.CountriesAdapter;
 import com.epresidential.rebtest.utils.Constants;
 import com.epresidential.rebtest.utils.StoreUtils;
@@ -51,6 +52,7 @@ public class CountriesFragment extends Fragment implements LoaderManager.LoaderC
             RebtestContract.CountryEntry.COLUMN_COUNTRY_NAME,
             RebtestContract.CountryEntry.COLUMN_COUNTRY_CODE,
             RebtestContract.CountryEntry.COLUMN_FLAG_WEB_URL,
+            RebtestContract.CountryEntry.COLUMN_POPULATION,
             RebtestContract.CountryEntry.COLUMN_CAPITAL
     };
 
@@ -59,17 +61,13 @@ public class CountriesFragment extends Fragment implements LoaderManager.LoaderC
     public static final int COL_COUNTRY_NAME = 1;
     public static final int COL_COUNTRY_CODE = 2;
     public static final int COL_FLAG_WEB_URL = 3;
-    public static final int COL_CAPITAL = 4;
+    public static final int COL_POPULATION = 4;
+    public static final int COL_CAPITAL = 5;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        boolean isFirstLoading = StoreUtils.getFirstLoading(getContext());
-        if(isFirstLoading){
-            updateCountries();
-        }
-
+        updateCountries();
     }
 
     @Nullable
@@ -104,45 +102,7 @@ public class CountriesFragment extends Fragment implements LoaderManager.LoaderC
 
     private void updateCountries() {
 
-        RestCountriesClient.with(getActivity().getApplicationContext()).getAllCountries(new JsonHttpResponseListener<Countries>(Countries.class) {
-            @Override
-            public void onFailure(HttpResponseException ex) {
-                Log.e(LOG_TAG, ex.getMessage(), ex);
-            }
-
-            @Override
-            public void onSuccess(Countries result) {
-                if(StoreUtils.getFirstLoading(getContext())){
-                    StoreUtils.setFirstLoading(getContext(), false);
-                }
-                //StoreUtils.setLastLoadedPage(getContext(), page);
-                Country[] countries = result.getCountries();
-
-                Vector<ContentValues> cVVector = new Vector<ContentValues>(10);
-                for(int i = 0; i<countries.length; i++){
-                    //for each received article create the ContentValues object containing the relevant info
-                    Country country = countries[i];
-                    ContentValues countryValues = new ContentValues();
-                    countryValues.put(RebtestContract.CountryEntry.COLUMN_COUNTRY_NAME, country.getName());
-                    countryValues.put(RebtestContract.CountryEntry.COLUMN_CAPITAL, country.getCapital());
-                    countryValues.put(RebtestContract.CountryEntry.COLUMN_COUNTRY_CODE, country.getAlpha2Code());
-                    String urlFlag = Constants.FLAGS_BASE_URL + country.getAlpha2Code().toLowerCase() + ".png";
-                    countryValues.put(RebtestContract.CountryEntry.COLUMN_FLAG_WEB_URL, urlFlag);
-                    cVVector.add(countryValues);
-                }
-                int inserted = 0;
-                // add articles to database with just one operation
-                if ( cVVector.size() > 0 ) {
-                    ContentValues[] cvArray = new ContentValues[cVVector.size()];
-                    cVVector.toArray(cvArray);
-                    inserted = getContext().getContentResolver().bulkInsert(RebtestContract.CountryEntry.CONTENT_URI, cvArray);
-                }
-            }
-        });
-    }
-
-    private void getFlags(){
-
+        CountriesSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override

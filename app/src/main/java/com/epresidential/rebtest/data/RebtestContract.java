@@ -32,6 +32,7 @@ public class RebtestContract {
         public static final String COLUMN_COUNTRY_NAME = "country_name";
         public static final String COLUMN_COUNTRY_CODE = "country_code";
         public static final String COLUMN_CAPITAL = "capital";
+        public static final String COLUMN_POPULATION = "population";
         public static final String COLUMN_FLAG_WEB_URL = "flag_web_url";
 
         public static Uri buildCountryUri(long id) {

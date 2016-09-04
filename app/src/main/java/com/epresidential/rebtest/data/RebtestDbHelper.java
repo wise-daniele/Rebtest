@@ -11,7 +11,7 @@ import com.epresidential.rebtest.data.RebtestContract.CountryEntry;
 public class RebtestDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     static final String DATABASE_NAME = "rebtest.db";
 
     public RebtestDbHelper(Context context) {
@@ -26,6 +26,7 @@ public class RebtestDbHelper extends SQLiteOpenHelper {
                 CountryEntry.COLUMN_COUNTRY_NAME + " TEXT NOT NULL, " +
                 CountryEntry.COLUMN_COUNTRY_CODE + " TEXT UNIQUE NOT NULL, " +
                 CountryEntry.COLUMN_CAPITAL + " TEXT NOT NULL, " +
+                CountryEntry.COLUMN_POPULATION + " INTEGER, " +
                 CountryEntry.COLUMN_FLAG_WEB_URL + " TEXT" +
                 ");";
         sqLiteDatabase.execSQL(SQL_CREATE_ARTICLE_TABLE);

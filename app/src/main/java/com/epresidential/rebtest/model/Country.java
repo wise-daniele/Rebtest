@@ -10,6 +10,7 @@ public class Country extends JsonObject {
     String name;
     String capital;
     String alpha2Code;
+    long population;
 
     public String getName() {
         return name;
@@ -34,4 +35,13 @@ public class Country extends JsonObject {
     public void setAlpha2Code(String alpha2Code) {
         this.alpha2Code = alpha2Code;
     }
+
+    public long getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(long population) {
+        this.population = population;
+    }
+
 }

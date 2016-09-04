@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.epresidential.rebtest.R;
+import com.epresidential.rebtest.sync.CountriesSyncAdapter;
 
 public class MainActivity extends AppCompatActivity implements CountriesFragment.CountryListener {
 
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements CountriesFragment
                 .add(R.id.main_fragment_container, articlesFragment, CountriesFragment.FRAGMENT_TAG)
                 .disallowAddToBackStack()
                 .commit();
+
+        CountriesSyncAdapter.initializeSyncAdapter(this);
     }
 
     @Override
