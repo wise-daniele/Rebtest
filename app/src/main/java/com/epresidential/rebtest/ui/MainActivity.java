@@ -14,12 +14,18 @@ public class MainActivity extends AppCompatActivity implements CountriesFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //get last position of listview in order to automatically scroll the listview
-        CountriesFragment articlesFragment = new CountriesFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.main_fragment_container, articlesFragment, CountriesFragment.FRAGMENT_TAG)
-                .disallowAddToBackStack()
-                .commit();
+
+        if (findViewById(R.id.main_fragment_container) != null) {
+            if (savedInstanceState != null) {
+                return;
+            }
+            CountriesFragment articlesFragment = new CountriesFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.main_fragment_container, articlesFragment, CountriesFragment.FRAGMENT_TAG)
+                    .disallowAddToBackStack()
+                    .commit();
+        }
 
         CountriesSyncAdapter.initializeSyncAdapter(this);
     }
